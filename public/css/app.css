@@ -1,0 +1,70 @@
+/* public/css/sidebar.css */
+@import url('./post/createPost.css');
+@import url('./user/listAllUsers.css');
+@import url('./auth/login.css');
+@import url('./navbar/sidebar.css');
+@import url('./auth/signIn.css');
+@import url('./welcome/welcome.css');
+@import url('./post/allPosts.css');
+@import url('./topic/allTopics.css');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+:root {
+    --azul--escuro: #154479;
+    --azul-claro-light: #3573d1;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f0f0f0; /* Cor de fundo para o corpo da aplicação */
+}
+
+.box-area {
+    width: 930px;
+}
+
+.right-box {
+    padding: 40px 30px 40px 40px;
+}
+
+::placeholder {
+    font-size: 16px;
+}
+
+.rounded-4 {
+    border-radius: 20px;
+}
+
+.rounded-5 {
+    border-radius: 30px;
+}
+
+@media only screen and (max-width: 768px) {
+    .box-area {
+        margin: 0 10px;
+    }
+    .left-box {
+        height: 100px;
+        overflow: hidden;
+    }
+    .right-box {
+        padding: 20px;
+    }
+}
+
+#menu {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    background-color: #1A202C; /* Cor de fundo para o menu onde está o ícone do menu hamburguer */
+}
+
+a {
+    text-decoration: none;
+}

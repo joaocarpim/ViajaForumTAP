@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+:root {
+    --azul--escuro: #154479;
+    --azul-claro-light: #3573d1;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #ececec;
+}
+
+.box-area {
+    width: 930px;
+}
+
+.right-box {
+    padding: 40px 30px 40px 40px;
+}
+
+::placeholder {
+    font-size: 16px;
+}
+
+.rounded-4 {
+    border-radius: 20px;
+}
+
+.rounded-5 {
+    border-radius: 30px;
+}
+
+@media only screen and (max-width: 768px) {
+    .box-area {
+        margin: 0 10px;
+    }
+    .left-box {
+        height: 100px;
+        overflow: hidden;
+    }
+    .right-box {
+        padding: 20px;
+    }
+}
+
+.table th, 
+.table td {
+    color: white;
+    border-color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.table thead th {
+    border-bottom: 2px solid white;
+}
+
+.table tbody + tbody {
+    border-top: 2px solid white;
+}
+
+.modal-content {
+    border-radius: 10px;
+    color: #fff;
+    background: linear-gradient(to bottom, var(--azul--escuro), var(--azul-claro-light));
+}
+
+.fas:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-edit, .btn-cancel {
+    background-color: #4671c1;
+    color: #FFF;
+}
+
+.btn-edit:hover, .btn-cancel:hover {
+    background-color: var(--azul--escuro);
+    color: #FFF;
+}
+
+.users-card {
+    border: none;
+    margin-bottom: 50px;
+}
+
+.card-title, .btn-close {
+    color: #FFF;
+}
+
+.containerAllUsers {
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 600px;
+}
+
+.user-list {
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, var(--azul--escuro), var(--azul-claro-light));
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+    color: #FFF;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.form-label {
+    margin-bottom: 0.5rem;
+    display: block;
+    text-align: left;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #4A5568;
+    color: #000;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #718096;
+}
+
+.submit-button {
+    background-color: #4671c1;
+    color: #fff;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.submit-button:hover {
+    background-color: var();
+}
+
+.error-message {
+    color: #E53E3E;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: block;
+}

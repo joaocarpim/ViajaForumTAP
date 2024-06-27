@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+:root {
+    --azul-escuro: rgba(6, 84, 201, 0.658);
+    --azul-claro-light: rgba(6, 84, 201, 0.658);
+    --branco: #FFFFFF;
+    --preto: #000000;
+    --font-family-base: 'Poppins', sans-serif; 
+}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #285ec2; /* Azul diferente */
+        }
+        .create-post-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .create-post-form {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        .create-post-title {
+            margin-bottom: 1.5rem;
+            color: #000000;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            color: #000000;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #4A5568;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #718096;
+        }
+        .submit-button {
+            background-color: #154479;
+            color: #fff;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .submit-button:hover {
+            background-color: #122b56;
+        }

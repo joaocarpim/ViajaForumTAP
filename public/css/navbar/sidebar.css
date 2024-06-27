@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Gluten:wght@100..900&display=swap');
+
+:root {
+    --azul-escuro: rgba(6, 84, 201, 0.658);
+    --azul-claro-light: rgba(6, 84, 201, 0.658);
+    --branco: #FFFFFF;
+    --preto: #000000;
+    --font-family-base: 'Poppins', sans-serif; 
+}
+h4 {
+    color: var(--branco);
+    padding-bottom: 15px;
+}
+
+body, main {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.fas:hover, .fa:hover, .NavbarIcon:hover {
+    transform: scale(1.1);
+}
+
+.NavbarIcon:hover {
+    transform: rotate(-360deg);
+    transition-duration: 0.5s;
+}
+
+.navbar-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.sidebar-content .sidebar-user {
+    display: none;
+}
+
+.navbar > .nav-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 15px;
+}
+
+.navbar .nav-icon .a-icons i {
+    font-size: 30px;
+}
+
+.a-icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+}
+
+.navbar .nav-icon p {
+    margin-top: 60px;
+    font-size: 12px;
+}
+
+@media (max-width: 1023px) {
+    .navbar-link, .nav-icon {
+        display: none;
+    }
+
+    .sidebar-content .sidebar-user {
+        display: block;
+    }
+}
+
+#collapseTopicos, #collapsePost, #collapseTag {
+    margin-left: 40px;
+    width: calc(100% - 25px);
+}
+
+.navbar-link:hover {
+    color: #fff;
+    transform: scale(1.1);
+    background-color: #285ec2;
+    border-radius: 10px;
+}
+
+.NavbarIcon {
+    height: 60px;
+}
+
+.sidebar {
+    display: flex;
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    left: -300px;
+    background: linear-gradient(to bottom, var(--azul-escuro), var(--azul-claro-light));
+    overflow-x: hidden;
+    transition: left 0.5s;
+    padding-top: 60px;
+    z-index: 1;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    left: 25px;
+    right: 25px;
+    font-size: 24px;
+    color: white;
+}
+
+.sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 20px;
+    color: var(--branco);
+    display: block;
+    transition: 0.3s;
+    border-radius: 10px;
+    margin: 15px;
+    width: 100%;
+}
+
+.sidebar a:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.menu-text {
+    flex: 1;
+}
+
+.navbar {
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, var(--azul-escuro), var(--azul-claro-light));
+    box-shadow: 0 0 20px 3px;
+    padding: 0 20px;
+}
+
+.navbar i {
+    font-size: 30px;
+    color: var(--branco);
+    cursor: pointer;
+}
+
+.titleWrapper {
+    flex: 1;
+    text-align: center;
+}
+
+.Title {
+    color: var(--branco);
+    font-size: 2rem;
+    margin-top: 20px;
+}
+
+.content {
+    padding: 20px;
+}
+
+.fa-sign-out-alt {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 40px;
+    color: var(--branco);
+    cursor: pointer;
+}
+
+.fa-user-circle {
+    position: absolute;
+    top: 32px;
+    right: 96px;
+    width: 40px;
+    color: var(--branco);
+    cursor: pointer;
+}
+
+p, label, h2 {
+    color: var(--branco);
+}
+
+footer {
+    background: linear-gradient(to bottom, var(--azul-claro-light), var(--azul-escuro));
+    color: var(--branco);
+    padding: 1rem 0;
+}
+
+footer .container {
+    text-align: center;
+}
+
+footer .list-inline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+footer .list-inline-item {
+    margin: 0 0.5rem;
+}
+
+footer a {
+    color: var(--branco);
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer p {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+/* Substituição dos ícones por palavras */
+
+.navbar .nav-icon .a-icons {
+    display: none;
+}
+
+.navbar .nav-icon p {
+    margin-top: 20px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.navbar .nav-icon:nth-child(1) p::before {
+    content: "Dashboard";
+}
+
+.navbar .nav-icon:nth-child(2) p::before {
+    content: "Users";
+}
+
+.navbar .nav-icon:nth-child(3) p::before {
+    content: "Posts";
+}
+
+.navbar .nav-icon:nth-child(4) p::before {
+    content: "Topics";
+}
+
+.navbar .nav-icon:nth-child(5) p::before {
+    content: "Settings";
+}
+

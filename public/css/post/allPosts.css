@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+:root {
+    --azul-escuro: #285ec2;
+    --azul-claro-light: #aad2f4;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #ececec;
+}
+
+.modal-content {
+    border-radius: 10px;
+    color: #fff;
+    background: linear-gradient(to bottom, var(--azul-escuro), var(--azul-claro-light));
+}
+
+.fas:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-edit, .btn-cancel {
+    background-color: #285ec2;
+    color: #fff;
+}
+
+.btn-edit:hover, .btn-cancel:hover {
+    background-color: #aad2f4;
+    color: #fff;
+}
+
+.containerAllPosts {
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.titlePost {
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.titlePost h1 {
+    padding: 2rem;
+    width: 100%;
+    border-radius: 10px;
+    color: #fff;
+    padding-left: 100px;
+    padding-right: 100px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    background: linear-gradient(to bottom, var(--azul-escuro), var(--azul-claro-light));
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-list {
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 60px;
+}
+
+.login-title {
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.tag-style {
+  
+    color: #285ec2;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+}
