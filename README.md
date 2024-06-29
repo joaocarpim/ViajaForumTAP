@@ -110,7 +110,7 @@ Este projeto está licenciado sob a licença MIT. Para mais detalhes, consulte o
 ## Contribuidores
 
 - João Vitor Aparecido Carpim de Souza
-- [Kenui Engler de Oliveira Martins](https://github.com/kenui)
+- [Kenui Engler de Oliveira Martins](https://github.com/kenui777)
 
 
 
