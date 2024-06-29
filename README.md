@@ -3,6 +3,13 @@
 ## Descrição
 ViajaForum é um projeto de estudo proposto pelo [professor André](https://github.com/profAndreSouza). Consiste em um fórum desenvolvido com Laravel.
 
+<details>
+  <summary>Clique para ver a screenshot do projeto</summary>
+  
+  ![Screen](screenshot.PNG)
+
+</details>
+
 ## Instrução de Instalação
 
 ### Pré-requisitos
