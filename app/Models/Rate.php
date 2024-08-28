@@ -1,27 +1,25 @@
 <?php
- 
+
 namespace App\Models;
- 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
- 
-abstract class Post extends Model
+
+class Rate extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'image'
-        
+        'rate'
     ];
- 
+
     public function user()
     {
-     return this->belongsTo(User::class);    
+        return $this->belongsTo(User::class);
     }
 
-    public function rates()
+    public function post()
     {
-     return this->hasMany(Rates::class);    
+        return $this->belongsTo(Post::class);
     }
 }
-
