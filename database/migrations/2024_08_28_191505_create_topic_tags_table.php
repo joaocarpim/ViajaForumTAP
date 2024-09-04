@@ -14,8 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('topic_tags', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->foreing('tag_id')->references('id')->on('tags');
+            $table->foreing('topic_id')->references('id')->on('topic');
+            
+            /**
+             * fazer os relacionamento
+             */
         });
     }
 
