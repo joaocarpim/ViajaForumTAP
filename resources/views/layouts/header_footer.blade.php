@@ -133,6 +133,10 @@
                 <a class="collapse" id="collapseTag" href="{{ route('listAllTags') }}">Visualizar</a>
                 <a class="collapse" id="collapseTag" href="{{ route('createTag') }}">Criar</a>
 
+                <a href="#collapseCategoria" data-bs-toggle="collapseCategoria"> Categorias</a>
+                <a class="collapse" id="collapseCategoria" href="{{ route('listAllCategories') }}">Visualizar</a>
+                <a class="collapse" id="collapseCategoria" href="{{ route('createCategory') }}">Criar</a>
+
                 @if (Auth::check())
                     <a href="{{ route('listUserById', [Auth::user()->id]) }}" class="sidebar-user">Meu Perfil</a>
                     <a href="{{ route('logout') }}" class="sidebar-user">Sair</a>

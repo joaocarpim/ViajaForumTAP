@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -66,5 +67,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/Tags/{id}/delete', [TagController::class, 'deleteTag'])->name('deleteTag');
 
     Route::match(['get', 'post'], '/createTag', [TagController::class, 'createTag'])->name('createTag');
+
+
+    Route::get('/categories', [CategoryController::class, 'listAllCategories'])->name('listAllCategories');
+    
+    Route::get('/categories/create', [CategoryController::class, 'register'])->name('createCategory');
+
+    Route::post('/categories', [CategoryController::class, 'register']);
+    
+    Route::get('/categories/{id}', [CategoryController::class, 'listCategoryById'])->name('listCategoryById');
+    
+    Route::post('/categories/{id}/update', [CategoryController::class, 'updateCategory'])->name('updateCategory');
+    
+    Route::delete('/categories/{id}', [CategoryController::class, 'deleteCategory'])->name('deleteCategory');
+    
 
 });
