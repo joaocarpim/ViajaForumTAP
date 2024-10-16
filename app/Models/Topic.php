@@ -15,19 +15,24 @@ class Topic extends Post
         'image',
         'status'
     ];
-           
+    
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
+
     public function category()
     {
-        return $this ->belongsTo(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function comments()
     {
-        return $this ->hasMany(Comment::class);
+        return $this->hasMany(Comment::class);
     }
 
     public function tags()
     {
-        return $this ->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class);
     }
 }
