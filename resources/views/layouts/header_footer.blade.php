@@ -67,7 +67,9 @@
         h3, h5 {
             color: rgb(0, 91, 228);
         }
-        </style>
+    </style>
+</head>
+
 <body>
 
     <div id="app">
@@ -81,7 +83,7 @@
         @elseif (Session::has('message-error'))
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                    toastr.success("{{ session('message-error') }}");
+                    toastr.error("{{ session('message-error') }}");
 
                     timeOut: 4000
                 });
@@ -98,13 +100,11 @@
                 <div class="nav-icon">
                     <a href="{{ route('listUserById', [Auth::user()->id]) }}" class="nav-icon">
                         <i class="fas fa-user-circle"></i>
-                        <!-- <p>Meu perfil</p> -->
                     </a>
                 </div>
                 <div class="nav-icon">
                     <a href="logout" class="nav-icon">
                         <i class="fas fa-sign-out-alt"></i>
-                        <!-- <p>Sair</p> -->
                     </a>
                 </div>
             @else
@@ -122,27 +122,35 @@
                 <a href="{{ route('listAllUsers') }}"> Tabela Usuários</a>
 
                 <a href="#collapsePost" data-bs-toggle="collapse"> Posts</a>
-                <a class="collapse" id="collapsePost" href="{{ route('listAllPosts') }}"> Visualizar</a>
-                <a class="collapse" id="collapsePost" href="{{ route('createPost') }}"> Criar</a>
+                <div class="collapse" id="collapsePost">
+                    <a href="{{ route('listAllPosts') }}">Visualizar</a>
+                    <a href="{{ route('createPost') }}">Criar</a>
+                </div>
 
-                <a data-bs-toggle="collapse" href="#collapseTopicos">Topicos</a>
-                <a class="collapse" id="collapseTopicos" href="{{ route('listAllTopics') }}">Visualizar</a>
-                <a class="collapse" id="collapseTopicos" href="{{ route('createTopic') }}">Criar</a>
+                <a href="#collapseTopicos" data-bs-toggle="collapse">Topicos</a>
+                <div class="collapse" id="collapseTopicos">
+                    <a href="{{ route('listAllTopics') }}">Visualizar</a>
+                    <a href="{{ route('createTopic') }}">Criar</a>
+                </div>
 
                 <a href="#collapseTag" data-bs-toggle="collapse"> Tags</a>
-                <a class="collapse" id="collapseTag" href="{{ route('listAllTags') }}">Visualizar</a>
-                <a class="collapse" id="collapseTag" href="{{ route('createTag') }}">Criar</a>
+                <div class="collapse" id="collapseTag">
+                    <a href="{{ route('listAllTags') }}">Visualizar</a>
+                    <a href="{{ route('createTag') }}">Criar</a>
+                </div>
 
-                <a href="#collapseCategoria" data-bs-toggle="collapseCategoria"> Categorias</a>
-                <a class="collapse" id="collapseCategoria" href="{{ route('listAllCategories') }}">Visualizar</a>
-                <a class="collapse" id="collapseCategoria" href="{{ route('createCategory') }}">Criar</a>
+                <a href="#collapseCategoria" data-bs-toggle="collapse"> Categorias</a>
+                <div class="collapse" id="collapseCategoria">
+                    <a href="{{ route('listAllCategories') }}">Visualizar</a>
+                    <a href="{{ route('createCategory') }}">Criar</a>
+                </div>
 
                 @if (Auth::check())
                     <a href="{{ route('listUserById', [Auth::user()->id]) }}" class="sidebar-user">Meu Perfil</a>
                     <a href="{{ route('logout') }}" class="sidebar-user">Sair</a>
                 @else
                     <a class="sidebar-user" href="register">Cadastre-se</a>
-                    <a class="sidebar-user"href="login">Entrar</a>
+                    <a class="sidebar-user" href="login">Entrar</a>
                 @endif
             </div>
         </div>

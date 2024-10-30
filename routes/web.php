@@ -68,18 +68,26 @@ Route::middleware('auth')->group(function () {
 
     Route::match(['get', 'post'], '/createTag', [TagController::class, 'createTag'])->name('createTag');
 
+   // Listar todas as categorias
+Route::get('/categories', [CategoryController::class, 'listAllCategories'])->name('listAllCategories');
 
-    Route::get('/categories', [CategoryController::class, 'listAllCategories'])->name('listAllCategories');
-    
-    Route::get('/categories/create', [CategoryController::class, 'register'])->name('createCategory');
+// Exibir formulário para criar uma nova categoria
+Route::match(['get', 'post'], '/categories/create', [CategoryController::class, 'register'])->name('createCategory');
 
-    Route::post('/categories', [CategoryController::class, 'register']);
-    
-    Route::get('/categories/{id}', [CategoryController::class, 'listCategoryById'])->name('listCategoryById');
-    
-    Route::post('/categories/{id}/update', [CategoryController::class, 'updateCategory'])->name('updateCategory');
-    
-    Route::delete('/categories/{id}', [CategoryController::class, 'deleteCategory'])->name('deleteCategory');
-    
+// Salvar nova categoria
+Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+
+// Exibir uma categoria específica pelo ID
+Route::get('/categories/{id}', [CategoryController::class, 'listCategoryById'])->name('listCategoryById');
+
+// Formulário para editar uma categoria específica
+Route::match(['get', 'post'], '/categories/{id}/edit', [CategoryController::class, 'edit'])->name('editCategory');
+
+// Atualizar uma categoria específica
+Route::post('/categories/{id}/update', [CategoryController::class, 'updateCategory'])->name('updateCategory');
+
+// Deletar uma categoria específica
+Route::delete('/categories/{id}', [CategoryController::class, 'deleteCategory'])->name('deleteCategory');
+
 
 });

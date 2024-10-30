@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Category;
@@ -18,7 +19,7 @@ class CategoryController extends Controller
 
     public function register(Request $request) {
         if ($request->isMethod('GET')) {
-            return view('categories.create');
+            return view('categories.create'); // Retornar a view 'create' (ou use 'categories.createCategories' se mantiver o nome)
         } else {
             $request->validate([
                 'name' => 'required|string|max:255',
@@ -45,4 +46,3 @@ class CategoryController extends Controller
         return redirect()->route('listAllCategories')->with('message-success', 'Categoria deletada com sucesso!');
     }
 }
-// temos problema 

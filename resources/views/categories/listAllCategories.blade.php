@@ -1,19 +1,37 @@
-@extends('layouts.app')
+@extends('layouts.header_footer')
 
 @section('content')
-<h1>Categorias</h1>
-<a href="{{ route('createCategory') }}">Criar Nova Categoria</a>
-
-<ul>
-    @foreach($categories as $category)
-        <li>
-            <a href="{{ route('listCategoryById', $category->id) }}">{{ $category->name }}</a>
-            <form action="{{ route('deleteCategory', $category->id) }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit">Deletar</button>
-            </form>
-        </li>
-    @endforeach
-</ul>
+    <div class="containerAllUsers">
+        <div class="categories-list">
+            <div class="table-categories-container" style="background: #285ec2; border-radius: 20px;">
+                <h2>Lista de Categorias</h2>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Título da Categoria</th>
+                            <th>Editar</th>
+                            <th>Deletar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($categories as $category)
+                        <tr>
+                            <td>{{ $category->title }}</td>
+                            <td>
+                                <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-edit">Editar</a>
+                            </td>
+                            <td>
+                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 @endsection
