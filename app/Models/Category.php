@@ -19,3 +19,4 @@ class Category extends Model
         return $this->hasMany(Topic::class);
     }
 }
+//temos problema 

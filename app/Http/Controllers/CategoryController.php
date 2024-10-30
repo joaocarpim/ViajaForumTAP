@@ -45,3 +45,4 @@ class CategoryController extends Controller
         return redirect()->route('listAllCategories')->with('message-success', 'Categoria deletada com sucesso!');
     }
 }
+// temos problema 
