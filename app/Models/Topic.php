@@ -12,13 +12,14 @@ class Topic extends Post
     protected $fillable = [
         'title',
         'description',
-        'image',
-        'status'
+        'category_id',
+        'status',
+        'image'
     ];
     
     public function post()
     {
-        return $this->belongsTo(Post::class);
+        return $this->morphOne(Post::class, 'postable');
     }
 
     public function category()

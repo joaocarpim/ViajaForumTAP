@@ -1,84 +1,59 @@
 @extends('layouts.header_footer')
 
 @section('content')
-    <div class="create-post-container">
+<div class="container mx-auto py-8">
+    
+    <header class="mb-6">
+        <h1 class="text-3xl font-bold">{{ $topic->title }}</h1>
+        <p class="text-lg">{{ $topic->content }}</p>
+    </header>
 
-        <form action="{{ route('register') }}" method="POST" class="create-post-form">
-            <h2 class="create-post-title">Editar Post de Viagem</h2>
-            @csrf
-            <div class="form-group">
-                <label for="title" class="form-label">Título do Post:</label>
-                <input type="text" id="title" name="title" class="form-input" value="{{ old('title') }}" required>
-                @error('title')
-                    <span>{{ $message }}</span>
-                @enderror
-            </div>
+    <section class="mb-6">
+        <h2 class="text-2xl font-semibold">Comentários</h2>
+        
+        @if($topic->comments->isEmpty())
+            <p class="text-gray-500">Não tem comentários ainda.</p>
+        @else
+            <ul class="space-y-4">
+                @foreach($topic->comments as $comment)
+                    <li class="p-4 border rounded shadow-sm">
+                        <p><strong>{{  $comment->post->user->name ?? 'Unknown User' }}</strong> disse:</p>
+                        <p>{{ $comment->content }}</p>
+                        <p class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</p>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+    </section>
 
-            <div class="form-group">
-                <label for="category" class="form-label">Categoria do Post:</label>
-                <select id="category" name="category" class="form-input" required>
-                    <option value="">Selecione uma categoria</option>
-                    <option value="aventuras">Aventuras</option>
-                    <option value="culturahistoria">Cultura e História</option>
-                    <option value="praia">Destinos de Praia</option>
-                    <option value="montanha">Destinos de Montanha</option>
-                    <option value="exotico">Destinos Exóticos</option>
-                </select>
-                @error('category')
-                    <span>{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="tag" class="form-label">Tags do Post:</label>
-                <select id="tag" name="tag" class="form-input" required>
-                    <option value="">Selecione tags</option>
-                    <option value="aventura">#Aventura</option>
-                    <option value="cultura">#Cultura</option>
-                    <option value="praia">#Praia</option>
-                    <option value="montanha">#Montanha</option>
-                    <option value="exotico">#Exótico</option>
-                </select>
-                @error('tag')
-                    <span>{{ $message }}</span>
-                @enderror
-            </div>
-
-
-            <div class="form-group">
-                <label for="text" class="form-label">Texto do Post:</label>
-                <textarea id="text" name="text" class="form-input" required>{{ old('text') }}</textarea>
-                @error('text')
-                    <span>{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="row">
-                <input type="submit" class="btn btn-edit" value="Editar">
-                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="fa-solid fa-ban"></i>
-                    Excluir Post</a>
-            </div>
-        </form>
-    </div>
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Excluir Post</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    @if(auth()->check())
+        <section class="mb-6">
+            <h2 class="text-2xl font-semibold">Adicione um comentário</h2>
+            <form action="{{ route('createComment', ['topicId' => $topic->id]) }}" method="POST" class="mt-3">
+                @csrf
+                <div class="form-group">
+                    <textarea name="content" class="form-control" rows="2" placeholder="Add a comment"></textarea>
                 </div>
-                <div class="modal-body">
-                    Você tem certeza que deseja excluir esse Post?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <form action="{{ route('deletePost', ['id' => $post->id]) }}" method="POST" class="w-50">
-                        @csrf
-                        @method('delete')
-                        <input type="submit" class="btn btn-danger" value=" Confirmar">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+                <button type="submit" class="btn btn-success mt-2">Comentar</button>
+            </form>
+        </section>
+    @endif
+
+    @if(auth()->check() && auth()->user()->id === $topic->user_id)
+        <section class="mb-6">
+            <h2 class="text-2xl font-semibold">Ações</h2>
+            <a href="{{ route('topics.edit', $topic->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Editar</a>
+            <form action="{{ route('topics.destroy', $topic->id) }}" method="POST" class="inline-block">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Deletar</button>
+            </form>
+        </section>
+        <h1>{{ $topic->title }}</h1>
+        <p>{{ $topic->description }}</p>
+        @if ($topic->image)
+            <img src="{{ asset('storage/' . $topic->image) }}" alt="Imagem do Tópico">
+        @endif
+    @endif
+</div>
 @endsection

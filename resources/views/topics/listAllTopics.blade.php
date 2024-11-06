@@ -1,120 +1,58 @@
 @extends('layouts.header_footer')
+
 @section('content')
-    <div class="containerAllUsers">
-        <div class="topics-list">
-           
-            <div class="table-topics-container" style="background: #285ec2; border-radius: 20px;">
-                <h2>Lista de Tópicos</h2>
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>Título do Tópico</th>
-                            <th>Editar</th>
-                            <th>Deletar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Topico #1</td>
-                            <td>
-                                <div class="row">
-                                    <input type="submit" class="btn btn-edit" value="Editar">
+    <div class="container mt-5">
+        <header class="mb-4">
+            <h1>Lista de Tópicos</h1>
+        </header>
 
-                                </div>
-
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#banModal"><i class="fa-solid fa-ban"></i> Excluir tópico</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Topico #2</td>
-                            <td>
-                                <div class="row">
-                                    <input type="submit" class="btn btn-edit" value="Editar">
-
-                                </div>
-
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#banModal"><i class="fa-solid fa-ban"></i> Excluir tópico</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Topico #3</td>
-                            <td>
-                                <div class="row">
-                                    <input type="submit" class="btn btn-edit" value="Editar">
-
-                                </div>
-
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#banModal"><i class="fa-solid fa-ban"></i> Excluir tópico</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Topico #4</td>
-                            <td>
-                                <div class="row">
-                                    <input type="submit" class="btn btn-edit" value="Editar">
-
-                                </div>
-
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#banModal"><i class="fa-solid fa-ban"></i> Excluir tópico</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Topico #5</td>
-                            <td>
-                                <div class="row">
-                                    <input type="submit" class="btn btn-edit" value="Editar">
-
-                                </div>
-
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#banModal"><i class="fa-solid fa-ban"></i> Excluir tópico</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Topico #6</td>
-                            <td>
-                                <div class="row">
-                                    <input type="submit" class="btn btn-edit" value="Editar">
-
-                                </div>
-
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#banModal"><i class="fa-solid fa-ban"></i> Excluir tópico</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="banModal" tabindex="-1" aria-labelledby="banModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="banModalLabel">Excluir Topico</h5>
-                    <i class="fas fa-times" data-bs-dismiss="modal" aria-label="Close" id="close-btn"></i>
-                </div>
-                <div class="modal-body">
-                    Você tem certeza que deseja excluir este Tópico?
-                </div>
-                <div class="modal-footer">
-                    <form action="" method="POST" class="w-500">
-                        @csrf
-                        @method('delete')
-                        <input type="submit" class="btn btn-danger" value=" Confirmar">
-                    </form>
+        <!-- Verificar se existem tópicos -->
+        @if ($topics->isEmpty())
+            <div class="custom-alert-div">
+                <div class="alert custom-alert">
+                    <i class="fa-solid fa-exclamation-circle"></i>
+                    Não há tópicos disponíveis.
                 </div>
             </div>
-        </div>
+        @else
+            <section class="topics-list">
+                @foreach ($topics as $topic)
+                    <article class="card mb-3">
+                        <header class="card-header">
+                            <h5>{{ $topic->title }}</h5>
+                        </header>
+                        <div class="card-body">
+                            <p>{{ $topic->description }}</p>
+                            <p>Status: {{ $topic->status ? 'Ativo' : 'Inativo' }}</p>
+                            <p>Categoria: {{ $topic->category->title ?? 'Sem categoria' }}</p>
+                            <a href="{{ route('listTopicById', $topic->id) }}" class="btn btn-primary">Ver Tópico</a>
+                        </div>
+                        <footer class="card-footer">
+                            <!-- Comentários -->
+                            <div class="comments-section">
+                                <h6>Comentários:</h6>
+                                @foreach ($topic->comments as $comment)
+                                    <div class="comment mb-3">
+                                        <p><strong>{{  $comment->post->user->name ?? 'Usuário desconhecido' }}</strong> disse:</p>
+                                        <p>{{ $comment->content }}</p>
+                                        <p class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <div class="add-comment-form">
+                                <form action="{{ route('createComment', ['topicId' => $topic->id]) }}" method="POST">
+                                    @csrf
+                                    <div class="form-group">
+                                        <textarea name="content" class="form-control" rows="2" placeholder="Adicionar um comentário"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-success mt-2">Comentar</button>
+                                </form>
+                            </div>
+                        </footer>
+                    </article>
+                @endforeach
+            </section>
+        @endif
     </div>
 @endsection
