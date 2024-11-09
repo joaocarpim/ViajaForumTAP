@@ -14,9 +14,11 @@ class Category extends Model
         'description'
     ];
 
+    // Adicionando a chave primária correta
+    protected $primaryKey = 'idCategory';  // Defina 'idCategory' como a chave primária
+
     public function topics()
     {
         return $this->hasMany(Topic::class);
     }
 }
-//temos problema 

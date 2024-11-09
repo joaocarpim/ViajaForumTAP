@@ -8,41 +8,64 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     public function listAllCategories() {
-        $categories = Category::all(); // Busca todas as categorias
+        $categories = Category::all();
         return view('categories.listAllCategories', ['categories' => $categories]);
     }
-
-    public function listCategoryById($id) {
-        $category = Category::findOrFail($id); // Busca uma categoria pelo ID
-        return view('categories.profile', ['category' => $category]);
+    
+    public function listCategoryById($idCategory) {  // Altere de $id para $idCategory
+        $category = Category::findOrFail($idCategory);  // Altere de $id para $idCategory
+        return view('categories.view_categorie', ['category' => $category]);
     }
-
-    public function register(Request $request) {
-        if ($request->isMethod('GET')) {
-            return view('categories.create'); // Retornar a view 'create' (ou use 'categories.createCategories' se mantiver o nome)
-        } else {
-            $request->validate([
-                'name' => 'required|string|max:255',
-            ]);
-
-            Category::create([
-                'name' => $request->name,
-            ]);
-
-            return redirect()->route('listAllCategories')->with('message-success', 'Categoria criada com sucesso!');
-        }
+    
+    public function create() {
+        return view('categories.create');
     }
-
-    public function updateCategory(Request $request, $id) {
-        $category = Category::findOrFail($id);
-        $category->name = $request->name;
+    
+    public function store(Request $request) {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
+        ]);
+    
+        Category::create([
+            'title' => $request->title,
+            'description' => $request->description,
+        ]);
+    
+        return redirect()->route('listAllCategories')->with('message-success', 'Categoria criada com sucesso!');
+    }
+    
+    public function edit($idCategory) {  // Altere de $id para $idCategory
+        $category = Category::findOrFail($idCategory);  // Altere de $id para $idCategory
+        return view('categories.view_categorie', ['category' => $category]);
+    }
+    
+    public function updateCategory(Request $request, $idCategory) {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
+        ]);
+    
+        // Encontra a categoria pelo idCategory
+        $category = Category::findOrFail($idCategory);
+    
+        // Atualiza os campos da categoria
+        $category->title = $request->title;
+        $category->description = $request->description;
         $category->save();
-
-        return redirect()->route('listCategoryById', [$category->id])->with('message-success', 'Alteração realizada com sucesso');
+    
+        // Redireciona para a lista de categorias
+        return redirect()->route('listAllCategories')
+                         ->with('message-success', 'Categoria atualizada com sucesso!');
     }
-
-    public function deleteCategory($id) {
-        Category::destroy($id);
+    
+    
+    
+    
+    
+    public function deleteCategory($idCategory) {  // Altere de $id para $idCategory
+        Category::destroy($idCategory);  // Altere de $id para $idCategory
         return redirect()->route('listAllCategories')->with('message-success', 'Categoria deletada com sucesso!');
     }
+    
 }
