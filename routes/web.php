@@ -7,6 +7,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
+
 
 
 Route::get('/', [AuthController::class, 'teste'])->name('teste');
@@ -30,12 +32,22 @@ Route::middleware('auth')->group(function () {
     Route::match(['get', 'post'], '/posts/create', [PostController::class, 'createPost'])->name('createPost');
 
     // Topic routes
-    Route::get('/topics', [TopicController::class, 'listAllTopics'])->name('listAllTopics');
-    Route::get('/topics/{id}', [TopicController::class, 'listTopicById'])->name('listTopicById');
-    Route::get('/topics/create', [TopicController::class, 'createTopicForm'])->name('createTopicForm');
-    Route::post('/topics', [TopicController::class, 'createTopic'])->name('createTopic'); // Corrigido para POST para a criação do tópico
-    Route::put('/topics/{id}/update', [TopicController::class, 'updateTopic'])->name('updateTopic');
-    Route::delete('/topics/{id}/delete', [TopicController::class, 'deleteTopic'])->name('deleteTopic');
+
+Route::get('/topics', [TopicController::class, 'listAllTopics'])->name('topics.listAllTopics');
+
+Route::get('/topics/create', [TopicController::class, 'createTopicForm'])->name('topics.create');
+
+Route::post('/topics', [TopicController::class, 'storeTopic'])->name('storeTopic');
+
+Route::get('/topics/{id}/edit', [TopicController::class, 'editTopicForm'])->name('topics.edit');
+
+Route::put('/topics/{id}', [TopicController::class, 'updateTopic'])->name('topics.update');
+
+
+Route::delete('/topics/{id}', [TopicController::class, 'deleteTopic'])->name('topics.delete');
+
+Route::get('/topics/{id}', [TopicController::class, 'showTopic'])->name('listTopicById');
+
 // Tag routes
 Route::get('/tags/create', [TagController::class, 'createTag'])->name('createTag');
 Route::get('/tags', [TagController::class, 'listAllTags'])->name('listAllTags');
@@ -53,4 +65,8 @@ Route::post('/tags', [TagController::class, 'storeTag'])->name('storeTag');
     Route::put('/categories/{idCategory}', [CategoryController::class, 'updateCategory'])->name('updateCategory');
     Route::delete('/categories/{idCategory}', [CategoryController::class, 'deleteCategory'])->name('deleteCategory');
     
+    
+
+Route::post('/topics/{topicId}/comments', [CommentController::class, 'store'])->name('createComment');
+
 });

@@ -14,8 +14,7 @@ class Category extends Model
         'description'
     ];
 
-    // Adicionando a chave primária correta
-    protected $primaryKey = 'idCategory';  // Defina 'idCategory' como a chave primária
+    protected $primaryKey = 'idCategory';  // Chave primária correta
 
     public function topics()
     {
