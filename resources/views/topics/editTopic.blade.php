@@ -30,9 +30,15 @@
             <label for="category_id">Categoria</label>
             <select name="category_id" id="category_id" class="form-control" required>
                 @foreach ($categories as $category)
+<<<<<<< HEAD
                 <option value="{{ $category->idCategory }}" {{ old('category_id', $topic->category_id) == $category->idCategory ? 'selected' : '' }}>
                     {{ $category->name }}
                 </option>
+=======
+                    <option value="{{ $category->idCategory }}" {{ old('category_id', $topic->category_id) == $category->idCategory ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+>>>>>>> 7b4248e196bf32428f644cf9686827cc2106c383
                 @endforeach
             </select>
         </div>
@@ -40,4 +46,8 @@
         <button type="submit" class="btn btn-primary">Salvar Alterações</button>
     </form>
 </div>
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> 7b4248e196bf32428f644cf9686827cc2106c383
