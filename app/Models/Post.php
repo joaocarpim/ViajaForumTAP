@@ -1,31 +1,38 @@
 <?php
- 
+
 namespace App\Models;
- 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
- 
-abstract class Post extends Model
+
+class Post extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'image'
-
+        'title',
+        'content',
+        'image',
+        'category_id',
+        'user_id',
     ];
 
-    public function topic() {
-        return $this->hasOne(Topic::class, 'id');
-    }
- 
     public function user()
     {
-     return this->belongsTo(User::class);    
+        return $this->belongsTo(User::class);
     }
 
-    public function rates()
+    public function category()
     {
-     return this->hasMany(Rates::class);    
+        return $this->belongsTo(Category::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'post_tag');
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? asset('storage/' . $this->image) : null;
     }
 }
-

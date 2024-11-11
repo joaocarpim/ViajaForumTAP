@@ -5,7 +5,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
 
-        /* Estilos adicionais para o botão */
         .submit-button {
             background-color: #4CAF50;
             color: white;
@@ -20,7 +19,6 @@
             background-color: #45a049;
         }
 
-        /* Estilos para o formulário */
         .create-post-container {
             max-width: 600px;
             margin: 0 auto;
@@ -64,16 +62,17 @@
             font-size: 14px;
         }
     </style>
+
     <div class="create-post-container">
         <h1 class="create-post-title">Criar Tópico</h1>
-        
-        <form method="POST" action="{{ route('createTopic') }}" enctype="multipart/form-data">
+
+        <form method="POST" action="{{ route('storeTopic') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="title" class="form-label">Título</label>
-                <input type="text" name="title" id="title" class="form-input" required value="{{ old('title') }}">
+                <input type="text" name="title" id="title" class="form-input" value="{{ old('title') }}" required>
                 @error('title')
-                    <div class="text-danger">{{ $message }}</div>
+                <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -81,7 +80,7 @@
                 <label for="description" class="form-label">Descrição</label>
                 <textarea name="description" id="description" class="form-input" required>{{ old('description') }}</textarea>
                 @error('description')
-                    <div class="text-danger">{{ $message }}</div>
+                <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -89,11 +88,13 @@
                 <label for="category_id" class="form-label">Categoria</label>
                 <select name="category_id" id="category_id" class="form-input" required>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    <option value="{{ $category->idCategory }}" {{ old('category_id') == $category->idCategory ? 'selected' : '' }}>
+                        {{ $category->title }}
+                    </option>
                     @endforeach
                 </select>
                 @error('category_id')
-                    <div class="text-danger">{{ $message }}</div>
+                <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -104,7 +105,7 @@
                     <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inativo</option>
                 </select>
                 @error('status')
-                    <div class="text-danger">{{ $message }}</div>
+                <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -112,7 +113,7 @@
                 <label for="image" class="form-label">Imagem (Opcional)</label>
                 <input type="file" name="image" id="image" class="form-input">
                 @error('image')
-                    <div class="text-danger">{{ $message }}</div>
+                <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 

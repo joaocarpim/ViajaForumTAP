@@ -24,7 +24,7 @@
     <title> ViajaForum </title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
-        
+
         * {
             padding: 0;
             margin: 0;
@@ -35,8 +35,10 @@
             font-family: 'Poppins', sans-serif;
             background-color: #f5f6fc13;
         }
-        .navbar, .sidebar {
-            background: #285ec2; 
+
+        .navbar,
+        .sidebar {
+            background: #285ec2;
         }
 
         .card-img-top {
@@ -64,7 +66,8 @@
             border: none;
         }
 
-        h3, h5 {
+        h3,
+        h5 {
             color: rgb(0, 91, 228);
         }
     </style>
@@ -74,20 +77,20 @@
 
     <div id="app">
         @if (Session::has('message-sucess'))
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    toastr.success("{{ session('message-sucess') }}");
-                    timeOut: 4000
-                });
-            </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                toastr.success("{{ session('message-sucess') }}");
+                timeOut: 4000
+            });
+        </script>
         @elseif (Session::has('message-error'))
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    toastr.error("{{ session('message-error') }}");
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                toastr.error("{{ session('message-error') }}");
 
-                    timeOut: 4000
-                });
-            </script>
+                timeOut: 4000
+            });
+        </script>
         @endif
         <div class="navbar">
             <i class="fa fa-bars" id="btn-navbar"></i>
@@ -97,19 +100,19 @@
                 </a>
             </div>
             @if (Auth::check())
-                <div class="nav-icon">
-                    <a href="{{ route('listUserById', [Auth::user()->id]) }}" class="nav-icon">
-                        <i class="fas fa-user-circle"></i>
-                    </a>
-                </div>
-                <div class="nav-icon">
-                    <a href="logout" class="nav-icon">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </a>
-                </div>
+            <div class="nav-icon">
+                <a href="{{ route('listUserById', [Auth::user()->id]) }}" class="nav-icon">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+            </div>
+            <div class="nav-icon">
+                <a href="logout" class="nav-icon">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
             @else
-                <a class="navbar-link" href="register">Cadastre-se</a>
-                <a class="navbar-link" href="login">Entrar</a>
+            <a class="navbar-link" href="register">Cadastre-se</a>
+            <a class="navbar-link" href="login">Entrar</a>
             @endif
         </div>
         <div id="sidebar" class="sidebar">
@@ -129,8 +132,8 @@
 
                 <a href="#collapseTopicos" data-bs-toggle="collapse">Topicos</a>
                 <div class="collapse" id="collapseTopicos">
-                    <a href="{{ route('listAllTopics') }}">Visualizar</a>
-                    <a href="{{ route('createTopicForm') }}">Criar</a>
+                    <a href="{{ route('topics.listAllTopics') }}">Visualizar</a>
+                    <a href="{{ route('topics.create') }}">Criar</a>
                 </div>
 
                 <a href="#collapseTag" data-bs-toggle="collapse"> Tags</a>
@@ -158,7 +161,5 @@
     <main>
         @yield('content')
     </main>
-
 </body>
-
 </html>

@@ -16,7 +16,7 @@ class Topic extends Post
         'status',
         'image'
     ];
-    
+
     public function post()
     {
         return $this->morphOne(Post::class, 'postable');
@@ -24,7 +24,7 @@ class Topic extends Post
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id', 'idCategory'); // Configura a chave estrangeira e a chave primária correta
     }
 
     public function comments()

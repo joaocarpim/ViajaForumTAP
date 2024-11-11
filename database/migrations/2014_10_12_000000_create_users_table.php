@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
@@ -19,18 +14,22 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('role')->default('user');
+            $table->boolean('is_suspended')->default(false);  
             $table->rememberToken();
             $table->timestamps();
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('is_suspended')->default(false);
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('is_suspended');
+        });
         Schema::dropIfExists('users');
     }
 };

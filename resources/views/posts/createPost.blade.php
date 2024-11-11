@@ -1,50 +1,82 @@
 @extends('layouts.header_footer')
 
 @section('content')
-<div class="create-post-container">
-    
-    <form action="{{ route('register') }}" method="POST" class="create-post-form">
-        <h2 class="create-post-title">Crie seu Post de Viagem!</h2>
-        @csrf
-        <div class="form-group">
-            <label for="title" class="form-label">Título da Viagem:</label>
-            <input type="text" id="title" name="title" class="form-input" value="{{ old("title") }}" required>
-            @error("title") <span>{{ $message }}</span> @enderror
-        </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Criar Novo Post</h2>
 
-        <div class="form-group">
-            <label for="category" class="form-label">Tipo de Viagem:</label>
-            <select id="category" name="category" class="form-input" required>
-                <option value="">Selecione o tipo de viagem</option>
-                <option value="aventura">Aventura</option>
-                <option value="cultural">Cultural</option>
-                <option value="praia">Praia</option>
-                <option value="montanha">Montanha</option>
-                <option value="urbana">Urbana</option>
-            </select>
-            @error('category') <span>{{ $message }}</span> @enderror
-        </div>
+            <!-- Exibe mensagens de erro ou sucesso -->
+            @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @elseif(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
 
-        <div class="form-group">
-            <label for="tag" class="form-label">Tags da Viagem:</label>
-            <select id="tag" name="tag" class="form-input" required>
-                <option value="">Selecione as tags da viagem</option>
-                <option value="aventura">#Aventura</option>
-                <option value="cultural">#Cultural</option>
-                <option value="praia">#Praia</option>
-                <option value="montanha">#Montanha</option>
-                <option value="urbana">#Urbana</option>
-            </select>
-            @error('tag') <span>{{ $message }}</span> @enderror
-        </div>     
-    
-        <div class="form-group">
-            <label for="text" class="form-label">Descrição da Viagem:</label>
-            <textarea id="text" name="text" class="form-input" required>{{ old('text') }}</textarea>
-            @error('text') <span>{{ $message }}</span> @enderror
+            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <!-- Campo de Título -->
+                <div class="form-group">
+                    <label for="title">Título</label>
+                    <input type="text" id="title" name="title" class="form-control" value="{{ old('title') }}" required>
+                    @error('title')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Campo de Categoria -->
+                <div class="form-group">
+                    <label for="category">Categoria</label>
+                    <select name="category" id="category" class="form-control" required>
+                        <option value="">Selecione uma categoria</option>
+                        @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('category')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Campo de Tags -->
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+                    <select name="tags[]" id="tags" class="form-control" multiple required>
+                        @foreach($tags as $tag)
+                        <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags', [])) ? 'selected' : '' }}>{{ $tag->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('tags')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Campo de Conteúdo -->
+                <div class="form-group">
+                    <label for="content">Conteúdo</label>
+                    <textarea id="content" name="content" class="form-control" rows="5" required>{{ old('content') }}</textarea>
+                    @error('content')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Campo de Imagem -->
+                <div class="form-group">
+                    <label for="image">Imagem (opcional)</label>
+                    <input type="file" id="image" name="image" class="form-control">
+                    @error('image')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <button type="submit" class="btn btn-primary">Criar Post</button>
+            </form>
         </div>
-    
-        <input type="submit" class="submit-button" value="Enviar">
-    </form>
+    </div>
 </div>
 @endsection

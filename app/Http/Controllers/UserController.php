@@ -58,5 +58,19 @@ public function register(Request $request) {
         $user = User::where('id', $id)->delete();
         return redirect()->route('listAllUsers');
     }
-    
+
+    public function toggleSuspension($userId)
+    {
+        $user = User::find($userId);
+
+        if ($user) {
+            $user->is_suspended = !$user->is_suspended;
+            $user->save();
+
+            $status = $user->is_suspended ? 'suspensa' : 'reativada';
+            return redirect()->back()->with('success', "Conta do usuário {$user->name} foi {$status} com sucesso!");
+        }
+
+        return redirect()->back()->with('error', 'Usuário não encontrado!');
+    }
 }
