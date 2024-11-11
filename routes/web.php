@@ -9,15 +9,11 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\CategoryController;
-<<<<<<< HEAD
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\CommentController;
-=======
-use App\Http\Controllers\CommentController;
 
 
->>>>>>> 7b4248e196bf32428f644cf9686827cc2106c383
 
 Route::get('/', [AuthController::class, 'teste'])->name('teste');
 Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
@@ -40,16 +36,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/{id}/edit', [PostController::class, 'editPost'])->name('editPost');  // Edita post
     Route::put('/posts/{id}', [PostController::class, 'updatePost'])->name('updatePost');  // Atualiza post
     Route::delete('/posts/{id}', [PostController::class, 'deletePost'])->name('deletePost');  // Exclui post
-    
+
+    // Comments routes
+    Route::post('/topics/{topicId}/comments', [CommentController::class, 'store'])->name('createComment');
+
     // Topic routes
-<<<<<<< HEAD
     Route::get('/topics', [TopicController::class, 'listAllTopics'])->name('topics.listAllTopics');
     Route::get('/topics/create', [TopicController::class, 'createTopicForm'])->name('topics.create');
     Route::post('/topics', [TopicController::class, 'storeTopic'])->name('storeTopic');
     Route::get('/topics/{id}/edit', [TopicController::class, 'editTopicForm'])->name('topics.edit');
-    Route::put('/topics/{id}', [TopicController::class, 'updateTopic'])->name('topics.update');
+    Route::put('/topics/{id}',[TopicController::class, 'updateTopic'])->name('topics.update');
     Route::delete('/topics/{id}', [TopicController::class, 'deleteTopic'])->name('topics.delete');
-    Route::get('/topics/{id}', [TopicController::class, 'showTopic'])->name('listTopicById');
+    Route::get('/topics/{id}',[TopicController::class, 'showTopic'])->name('listTopicById');
 
     // Tag routes
     Route::get('/tags/create', [TagController::class, 'createTag'])->name('createTag');
@@ -58,31 +56,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/tags/{id}/update', [TagController::class, 'updateTag'])->name('updateTag');
     Route::delete('/tags/{id}/delete', [TagController::class, 'deleteTag'])->name('deleteTag');
     Route::post('/tags', [TagController::class, 'storeTag'])->name('storeTag');
-=======
-
-Route::get('/topics', [TopicController::class, 'listAllTopics'])->name('topics.listAllTopics');
-
-Route::get('/topics/create', [TopicController::class, 'createTopicForm'])->name('topics.create');
-
-Route::post('/topics', [TopicController::class, 'storeTopic'])->name('storeTopic');
-
-Route::get('/topics/{id}/edit', [TopicController::class, 'editTopicForm'])->name('topics.edit');
-
-Route::put('/topics/{id}', [TopicController::class, 'updateTopic'])->name('topics.update');
-
-
-Route::delete('/topics/{id}', [TopicController::class, 'deleteTopic'])->name('topics.delete');
-
-Route::get('/topics/{id}', [TopicController::class, 'showTopic'])->name('listTopicById');
-
-// Tag routes
-Route::get('/tags/create', [TagController::class, 'createTag'])->name('createTag');
-Route::get('/tags', [TagController::class, 'listAllTags'])->name('listAllTags');
-Route::get('/tags/{id}', [TagController::class, 'listTagById'])->name('listTagById');
-Route::put('/tags/{id}/update', [TagController::class, 'updateTag'])->name('updateTag');
-Route::delete('/tags/{id}/delete', [TagController::class, 'deleteTag'])->name('deleteTag');
-Route::post('/tags', [TagController::class, 'storeTag'])->name('storeTag');
->>>>>>> 7b4248e196bf32428f644cf9686827cc2106c383
 
     // Category routes
     Route::get('/categories', [CategoryController::class, 'listAllCategories'])->name('listAllCategories');
@@ -92,10 +65,6 @@ Route::post('/tags', [TagController::class, 'storeTag'])->name('storeTag');
     Route::get('/categories/{idCategory}/edit', [CategoryController::class, 'edit'])->name('editCategory');
     Route::put('/categories/{idCategory}', [CategoryController::class, 'updateCategory'])->name('updateCategory');
     Route::delete('/categories/{idCategory}', [CategoryController::class, 'deleteCategory'])->name('deleteCategory');
-<<<<<<< HEAD
-
-    //Comments routes
-    Route::post('/topics/{topicId}/comments', [CommentController::class, 'store'])->name('createComment');
 
     // admin routes
     Route::middleware(['auth', 'admin'])->group(function () {
@@ -147,11 +116,4 @@ Route::post('/tags', [TagController::class, 'storeTag'])->name('storeTag');
 
         return "Usuários Admin e Moderador configurados com sucesso!";
     });
-=======
-    
-    
-
-Route::post('/topics/{topicId}/comments', [CommentController::class, 'store'])->name('createComment');
-
->>>>>>> 7b4248e196bf32428f644cf9686827cc2106c383
 });

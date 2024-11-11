@@ -50,11 +50,21 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+            color: black;
+            /* Garantir que o texto dentro do input seja preto */
         }
 
         .form-input:focus {
             border-color: #4CAF50;
             outline: none;
+        }
+
+        /* Estilo específico para as opções dentro dos selects */
+        select {
+            color: black;
+            /* Garantir que o texto das opções apareçam em preto */
+            background-color: white;
+            /* Garantir que o fundo da seleção seja branco */
         }
 
         .text-danger {
@@ -64,12 +74,12 @@
     </style>
 
     <div class="create-post-container">
-
-        <form method="POST" action="{{ route('storeTopic') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
             @csrf
-            <div class="form-group">
-                <h1 class="create-post-title">Criar Tópico</h1>
+            <h1 class="create-post-title">Criar Novo Post</h1>
 
+            <!-- Campo de Título -->
+            <div class="form-group">
                 <label for="title" class="form-label">Título</label>
                 <input type="text" name="title" id="title" class="form-input" value="{{ old('title') }}" required>
                 @error('title')
@@ -77,14 +87,7 @@
                 @enderror
             </div>
 
-            <div class="form-group">
-                <label for="description" class="form-label">Descrição</label>
-                <textarea name="description" id="description" class="form-input" required>{{ old('description') }}</textarea>
-                @error('description')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-
+            <!-- Campo de Categoria -->
             <div class="form-group">
                 <label for="category_id" class="form-label">Categoria</label>
                 <select name="category_id" id="category_id" class="form-input" required>
@@ -99,17 +102,33 @@
                 @enderror
             </div>
 
+            
+            <!-- Campo de Tags -->
             <div class="form-group">
-                <label for="status" class="form-label">Status</label>
-                <select name="status" id="status" class="form-input" required>
-                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Ativo</option>
-                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inativo</option>
+                <label for="tags" class="form-label">Tags</label>
+                <select name="tags[]" id="tags" class="form-input" multiple required>
+                    @foreach ($tags as $tag)
+                    <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags', [])) ? 'selected' : '' }}>
+                        {{ $tag->name }}
+                    </option>
+                    @endforeach
                 </select>
-                @error('status')
+                @error('tags')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
+
+            <!-- Campo de Conteúdo -->
+            <div class="form-group">
+                <label for="content" class="form-label">Conteúdo</label>
+                <textarea name="content" id="content" class="form-input" rows="5" required>{{ old('content') }}</textarea>
+                @error('content')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Campo de Imagem -->
             <div class="form-group">
                 <label for="image" class="form-label">Imagem (Opcional)</label>
                 <input type="file" name="image" id="image" class="form-input">
@@ -119,7 +138,7 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" class="submit-button">Criar Tópico</button>
+                <button type="submit" class="submit-button">Criar Post</button>
             </div>
         </form>
     </div>

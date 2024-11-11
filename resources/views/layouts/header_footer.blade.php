@@ -132,14 +132,8 @@
 
                 <a href="#collapseTopicos" data-bs-toggle="collapse">Topicos</a>
                 <div class="collapse" id="collapseTopicos">
-<<<<<<< HEAD
                     <a href="{{ route('topics.listAllTopics') }}">Visualizar</a>
                     <a href="{{ route('topics.create') }}">Criar</a>
-=======
-                <a href="{{ route('topics.listAllTopics') }}">Visualizar</a>
-                <a href="{{ route('topics.create') }}">Criar</a>
-
->>>>>>> 7b4248e196bf32428f644cf9686827cc2106c383
                 </div>
 
                 <a href="#collapseTag" data-bs-toggle="collapse"> Tags</a>
