@@ -9,9 +9,12 @@ class Tag extends Model
 {
     use HasFactory;
 
-    // Relacionamento muitos-para-muitos com posts
-    public function posts()
+    protected $fillable = [
+        'title'
+    ];
+
+    public function topics()
     {
-        return $this->belongsToMany(Post::class, 'post_tag');
+        return $this->belongsToMany(Topic::class, 'topic_tag');
     }
 }

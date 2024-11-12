@@ -37,9 +37,19 @@ Route::middleware('auth')->group(function () {
     Route::put('/posts/{id}', [PostController::class, 'updatePost'])->name('updatePost');  // Atualiza post
     Route::delete('/posts/{id}', [PostController::class, 'deletePost'])->name('deletePost');  // Exclui post
 
-    // Comments routes
-    Route::post('/topics/{topicId}/comments', [CommentController::class, 'store'])->name('createComment');
+// comment
+Route::prefix('topics/{topicId}/comments')->group(function () {
+    Route::get('/', [CommentController::class, 'index'])->name('comments.index');
+    Route::get('/{id}', [CommentController::class, 'show'])->name('comments.show');
+    Route::get('/create', [CommentController::class, 'create'])->name('comments.create');
+    Route::post('/', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::put('/{id}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+});
 
+
+    
     // Topic routes
     Route::get('/topics', [TopicController::class, 'listAllTopics'])->name('topics.listAllTopics');
     Route::get('/topics/create', [TopicController::class, 'createTopicForm'])->name('topics.create');
@@ -47,7 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/topics/{id}/edit', [TopicController::class, 'editTopicForm'])->name('topics.edit');
     Route::put('/topics/{id}',[TopicController::class, 'updateTopic'])->name('topics.update');
     Route::delete('/topics/{id}', [TopicController::class, 'deleteTopic'])->name('topics.delete');
-    Route::get('/topics/{id}',[TopicController::class, 'showTopic'])->name('listTopicById');
+    Route::get('/topics/{id}', [TopicController::class, 'showTopic'])->name('listTopicById');
 
     // Tag routes
     Route::get('/tags/create', [TagController::class, 'createTag'])->name('createTag');

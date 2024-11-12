@@ -100,10 +100,10 @@ class TopicController extends Controller
 
         return redirect()->route('topics.listAllTopics');
     }
-
     public function showTopic($id)
     {
-        $topic = Topic::with('comments')->findOrFail($id);
+        $topic = Topic::with('category', 'comments.user')->findOrFail($id); // Carrega o tópico com categoria e comentários
         return view('topics.showTopic', compact('topic'));
     }
+    
 }

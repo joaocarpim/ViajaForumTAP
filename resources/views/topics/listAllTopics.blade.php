@@ -6,7 +6,6 @@
         <h1>Lista de Tópicos</h1>
     </header>
 
-    <!-- Verificar se existem tópicos -->
     @if ($topics->isEmpty())
     <div class="custom-alert-div">
         <div class="alert custom-alert">
@@ -26,22 +25,38 @@
                 <p>Status: {{ $topic->status ? 'Ativo' : 'Inativo' }}</p>
                 <p>Categoria: {{ $topic->category->title ?? 'Sem categoria' }}</p>
                 <a href="{{ route('listTopicById', $topic->id) }}" class="btn btn-primary">Ver Tópico</a>
+
+                <a href="{{ route('comments.index', ['topicId' => $topic->id]) }}" class="btn btn-primary mt-2">Ver Comentários</a>
             </div>
             <footer class="card-footer">
-                <!-- Comentários -->
                 <div class="comments-section">
                     <h6>Comentários:</h6>
                     @foreach ($topic->comments as $comment)
                     <div class="comment mb-3">
-                        <p><strong>{{ $comment->post->user->name ?? 'Usuário desconhecido' }}</strong> disse:</p>
+                        <p><strong>{{ $comment->user->name ?? 'Usuário desconhecido' }}</strong> disse:</p>
                         <p>{{ $comment->content }}</p>
                         <p class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</p>
+
+                        <!-- Botões de editar e excluir, somente se o usuário for o dono do comentário ou um administrador -->
+                        @if(auth()->check() && (auth()->id() === $comment->user_id || auth()->user()->is_admin))
+                        <div class="d-flex justify-content-between mt-2">
+                            <!-- Botão de Editar -->
+                            <a href="{{ route('comments.edit', ['topicId' => $topic->id, 'id' => $comment->id]) }}" class="btn btn-warning btn-sm">Editar</a>
+
+                            <!-- Botão de Excluir -->
+                            <form action="{{ route('comments.destroy', ['topicId' => $topic->id, 'id' => $comment->id]) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                            </form>
+                        </div>
+                        @endif
                     </div>
                     @endforeach
                 </div>
 
                 <div class="add-comment-form">
-                    <form action="{{ route('createComment', ['topicId' => $topic->id]) }}" method="POST">
+                    <form action="{{ route('comments.store', ['topicId' => $topic->id]) }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <textarea name="content" class="form-control" rows="2" placeholder="Adicionar um comentário"></textarea>
@@ -50,10 +65,8 @@
                     </form>
                 </div>
 
-                <!-- Botões de Editar e Excluir -->
                 <div class="d-flex justify-content-between mt-3">
                     <a href="{{ route('topics.edit', $topic->id) }}" class="btn btn-warning">Editar</a>
-
                     <form action="{{ route('topics.delete', $topic->id) }}" method="POST">
                         @csrf
                         @method('DELETE')

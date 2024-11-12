@@ -34,6 +34,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f5f6fc13;
+            color: black; /* Cor do texto para todo o corpo */
         }
 
         .navbar,
@@ -54,11 +55,13 @@
         .card-body {
             padding: 15px;
             margin-top: 15px;
+            color: black; /* Garantir que o texto nas cards seja preto */
         }
 
         .btn-primary {
             border-radius: 12px;
             width: 120px;
+            color: black; /* Cor do texto do botão */
         }
 
         .btn-primary:hover {
@@ -68,7 +71,15 @@
 
         h3,
         h5 {
-            color: rgb(0, 91, 228);
+            color: black; /* Títulos pretos */
+        }
+
+        h1, h2, h3, h4, h5, h6, p, a {
+            color: black; /* Garantir que todos os textos sejam pretos */
+        }
+
+        .sidebar-content a {
+            color: black; /* Links na sidebar */
         }
     </style>
 </head>
@@ -87,7 +98,6 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 toastr.error("{{ session('message-error') }}");
-
                 timeOut: 4000
             });
         </script>
