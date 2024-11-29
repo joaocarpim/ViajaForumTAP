@@ -13,8 +13,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\CommentController;
 
-
-
 Route::get('/', [AuthController::class, 'teste'])->name('teste');
 Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
 Route::match(['get', 'post'], '/register', [UserController::class, 'register'])->name('register');
@@ -29,33 +27,33 @@ Route::middleware('auth')->group(function () {
     Route::delete('/users/{id}/delete', [UserController::class, 'deleteUser'])->name('deleteUser');
 
     // Post routes
-    Route::get('/posts', [PostController::class, 'listAllPosts'])->name('listAllPosts');  // Exibe todos os posts
-    Route::get('/posts/create', [PostController::class, 'createPost'])->name('createPost'); // Exibe o formulário de criação de post
-    Route::post('/posts', [PostController::class, 'store'])->name('posts.store'); // Armazena o novo post
-    Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');  // Exibe post
-    Route::get('/posts/{id}/edit', [PostController::class, 'editPost'])->name('editPost');  // Edita post
-    Route::put('/posts/{id}', [PostController::class, 'updatePost'])->name('updatePost');  // Atualiza post
-    Route::delete('/posts/{id}', [PostController::class, 'deletePost'])->name('deletePost');  // Exclui post
+  
 
-// comment
-Route::prefix('topics/{topicId}/comments')->group(function () {
-    Route::get('/', [CommentController::class, 'index'])->name('comments.index');
-    Route::get('/{id}', [CommentController::class, 'show'])->name('comments.show');
-    Route::get('/create', [CommentController::class, 'create'])->name('comments.create');
-    Route::post('/', [CommentController::class, 'store'])->name('comments.store');
-    Route::get('/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
-    Route::put('/{id}', [CommentController::class, 'update'])->name('comments.update');
-    Route::delete('/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
-});
+    Route::get('/posts/create', [PostController::class, 'createPost'])->name('createPost');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
+    Route::put('/posts/{id}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+    Route::get('/posts', [PostController::class, 'listAllPosts'])->name('listAllPosts');
 
+    // Comment routes within Topic
+    Route::prefix('topics/{topicId}/comments')->group(function () {
+        Route::get('/', [CommentController::class, 'index'])->name('comments.index');
+        Route::get('/{id}', [CommentController::class, 'show'])->name('comments.show');
+        Route::get('/create', [CommentController::class, 'create'])->name('comments.create');
+        Route::post('/', [CommentController::class, 'store'])->name('comments.store');
+        Route::get('/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+        Route::put('/{id}', [CommentController::class, 'update'])->name('comments.update');
+        Route::delete('/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    });
 
-    
     // Topic routes
     Route::get('/topics', [TopicController::class, 'listAllTopics'])->name('topics.listAllTopics');
     Route::get('/topics/create', [TopicController::class, 'createTopicForm'])->name('topics.create');
     Route::post('/topics', [TopicController::class, 'storeTopic'])->name('storeTopic');
     Route::get('/topics/{id}/edit', [TopicController::class, 'editTopicForm'])->name('topics.edit');
-    Route::put('/topics/{id}',[TopicController::class, 'updateTopic'])->name('topics.update');
+    Route::put('/topics/{id}', [TopicController::class, 'updateTopic'])->name('topics.update');
     Route::delete('/topics/{id}', [TopicController::class, 'deleteTopic'])->name('topics.delete');
     Route::get('/topics/{id}', [TopicController::class, 'showTopic'])->name('listTopicById');
 
@@ -81,12 +79,11 @@ Route::prefix('topics/{topicId}/comments')->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     });
 
-    // moderador routes
+    // moderator routes
     Route::middleware(['auth', 'moderator'])->group(function () {
         Route::get('/moderator/dashboard', [ModeratorController::class, 'index'])->name('moderator.dashboard');
     });
     Route::middleware(['auth', 'moderator'])->post('/usuarios/{user}/suspender', [UserController::class, 'toggleSuspension'])->name('user.toggleSuspension');
-
 
     // suspension user
     Route::middleware(['auth', 'chack.suspension'])->group(function () {

@@ -19,9 +19,9 @@
             <select id="category" name="category" class="form-input" required>
                 <option value="">Selecione uma categoria</option>
                 @foreach($categories as $category)
-                <option value="{{ $category->id }}" {{ $category->id == old('category', $post->category_id) ? 'selected' : '' }}>
-                    {{ $category->name }}
-                </option>
+                    <option value="{{ $category->id }}" {{ $category->id == old('category', $post->category_id) ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
                 @endforeach
             </select>
             @error('category') <span>{{ $message }}</span> @enderror
@@ -31,10 +31,9 @@
             <label for="tags" class="form-label">Tags do Post:</label>
             <select id="tags" name="tags[]" class="form-input" multiple required>
                 @foreach($tags as $tag)
-                <option value="{{ $tag->id }}"
-                    {{ in_array($tag->id, old('tags', $post->tags->pluck('id')->toArray())) ? 'selected' : '' }}>
-                    {{ $tag->name }}
-                </option>
+                    <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags', $post->tags->pluck('id')->toArray())) ? 'selected' : '' }}>
+                        {{ $tag->name }}
+                    </option>
                 @endforeach
             </select>
             @error('tags') <span>{{ $message }}</span> @enderror

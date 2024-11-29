@@ -12,11 +12,9 @@ return new class extends Migration
             $table->unsignedBigInteger('tag_id');
             $table->unsignedBigInteger('topic_id');
 
-            // Define as chaves estrangeiras
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
             $table->foreign('topic_id')->references('id')->on('topics')->onDelete('cascade');
 
-            // Define uma chave composta para evitar duplicidade
             $table->primary(['tag_id', 'topic_id']);
         });
     }

@@ -19,39 +19,44 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        return view('posts.create', compact('categories', 'tags'));
+        return view('posts.createPost', compact('categories', 'tags'));  // Alterado para 'createPost'
     }
 
     public function store(Request $request)
     {
+        // Validação dos dados recebidos
         $request->validate([
-            'title' => 'required|string|max:255',
-            'category' => 'required|exists:categories,id',
-            'tags' => 'required|array',
-            'tags.*' => 'exists:tags,id',
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'title' => 'required|string|max:255', // Título obrigatório e com tamanho máximo
+            'category_id' => 'required|exists:categories,id', // Corrigido: 'category' para 'category_id'
+            'tags' => 'required|array', // As tags devem ser um array
+            'tags.*' => 'exists:tags,id', // Cada tag deve existir no banco
+            'content' => 'required|string', // Conteúdo obrigatório
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Imagem opcional, mas se fornecida, deve ser do tipo imagem
         ]);
-
+    
+        // Verifica se o usuário carregou uma imagem
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
+            $imagePath = $request->file('image')->store('images', 'public'); // Armazena a imagem
         } else {
-            $imagePath = null;
+            $imagePath = null; // Caso não haja imagem, mantém o valor nulo
         }
-
+    
+        // Cria o post com os dados fornecidos
         $post = Post::create([
             'title' => $request->title,
             'content' => $request->content,
-            'category_id' => $request->category,
-            'user_id' => auth()->id(),
-            'image' => $imagePath,
+            'category_id' => $request->category_id,  // 'category' corrigido para 'category_id'
+            'user_id' => auth()->id(),  // Associa o post ao usuário autenticado
+            'image' => $imagePath, // Se houver imagem, armazena o caminho
         ]);
-
+    
+        // Associa as tags selecionadas ao post
         $post->tags()->sync($request->tags);
-
+    
+        // Redireciona para a lista de posts com uma mensagem de sucesso
         return redirect()->route('listAllPosts')->with('success', 'Post criado com sucesso!');
     }
-
+    
 
     public function show($id)
     {
@@ -59,7 +64,7 @@ class PostController extends Controller
         if (!$post) {
             return redirect()->route('listAllPosts')->with('error', 'Post não encontrado!');
         }
-        return view('posts.show', ['post' => $post]);
+        return view('posts.showPost', ['post' => $post]);  // Alterado para 'showPost'
     }
 
     public function editPost($id)
@@ -72,7 +77,7 @@ class PostController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
 
-        return view('posts.editPost', compact('post', 'categories', 'tags'));
+        return view('posts.editPost', compact('post', 'categories', 'tags'));  // Alterado para 'editPost'
     }
 
     public function updatePost(Request $request, $id)

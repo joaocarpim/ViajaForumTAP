@@ -47,6 +47,17 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <label for="tags">Tags</label>
+            <select name="tags[]" id="tags" class="form-control" multiple>
+                @foreach ($tags as $tag)
+                    <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags', $topic->tags->pluck('id')->toArray())) ? 'selected' : '' }}>
+                        {{ $tag->title }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Salvar Alterações</button>
     </form>
 </div>

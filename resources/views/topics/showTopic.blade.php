@@ -6,6 +6,13 @@
         <h1>{{ $topic->title }}</h1>
         <p>Status: {{ $topic->status ? 'Ativo' : 'Inativo' }}</p>
         <p>Categoria: {{ $topic->category->title ?? 'Sem categoria' }}</p>
+        <p><strong>Tags:</strong> 
+            @forelse ($topic->tags as $tag)
+                <span class="badge bg-info">{{ $tag->title }}</span>
+            @empty
+                <span class="badge bg-secondary">Nenhuma tag</span>
+            @endforelse
+        </p>
     </header>
 
     <section class="topic-details">
@@ -26,7 +33,6 @@
     <section class="add-comment-form">
         <h4>Adicionar um comentário:</h4>
         <form action="{{ route('comments.store', ['topicId' => $topic->id]) }}" method="POST">
-
             @csrf
             <textarea name="content" class="form-control" rows="3" placeholder="Escreva seu comentário..."></textarea>
             <button type="submit" class="btn btn-primary mt-2">Comentar</button>

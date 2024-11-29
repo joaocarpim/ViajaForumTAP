@@ -24,8 +24,17 @@
                 <p>{{ $topic->description }}</p>
                 <p>Status: {{ $topic->status ? 'Ativo' : 'Inativo' }}</p>
                 <p>Categoria: {{ $topic->category->title ?? 'Sem categoria' }}</p>
-                <a href="{{ route('listTopicById', $topic->id) }}" class="btn btn-primary">Ver Tópico</a>
 
+                <!-- Exibe as tags associadas ao tópico -->
+                <p><strong>Tags:</strong> 
+                    @forelse ($topic->tags as $tag)
+                        <span class="badge bg-info">{{ $tag->title }}</span>
+                    @empty
+                        <span class="badge bg-secondary">Nenhuma tag</span>
+                    @endforelse
+                </p>
+
+                <a href="{{ route('listTopicById', $topic->id) }}" class="btn btn-primary">Ver Tópico</a>
                 <a href="{{ route('comments.index', ['topicId' => $topic->id]) }}" class="btn btn-primary mt-2">Ver Comentários</a>
             </div>
             <footer class="card-footer">
@@ -37,13 +46,9 @@
                         <p>{{ $comment->content }}</p>
                         <p class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</p>
 
-                        <!-- Botões de editar e excluir, somente se o usuário for o dono do comentário ou um administrador -->
                         @if(auth()->check() && (auth()->id() === $comment->user_id || auth()->user()->is_admin))
                         <div class="d-flex justify-content-between mt-2">
-                            <!-- Botão de Editar -->
                             <a href="{{ route('comments.edit', ['topicId' => $topic->id, 'id' => $comment->id]) }}" class="btn btn-warning btn-sm">Editar</a>
-
-                            <!-- Botão de Excluir -->
                             <form action="{{ route('comments.destroy', ['topicId' => $topic->id, 'id' => $comment->id]) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')

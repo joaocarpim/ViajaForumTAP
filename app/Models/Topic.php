@@ -14,9 +14,9 @@ class Topic extends Post
         'description',
         'category_id',
         'status',
-        'image'
     ];
 
+    // Relacionamento polimórfico com Post
     public function post()
     {
         return $this->morphOne(Post::class, 'postable');
@@ -24,7 +24,7 @@ class Topic extends Post
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'idCategory'); // Configura a chave estrangeira e a chave primária correta
+        return $this->belongsTo(Category::class, 'category_id', 'idCategory');
     }
 
     public function comments()
@@ -34,6 +34,6 @@ class Topic extends Post
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class, 'topic_tags');
     }
 }
