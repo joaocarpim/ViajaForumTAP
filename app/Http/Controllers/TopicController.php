@@ -10,22 +10,19 @@ use Illuminate\Http\Request;
 
 class TopicController extends Controller
 {
-    // Método para listar todos os tópicos
     public function listAllTopics()
     {
-        $topics = Topic::with('comments', 'tags', 'category')->get();  // Carrega comentários, tags e categoria associada
+        $topics = Topic::with('comments', 'tags', 'category')->get();
         return view('topics.listAllTopics', ['topics' => $topics]);
     }
 
-    // Método para mostrar o formulário de criação de um tópico
     public function createTopicForm()
     {
         $categories = Category::all();
-        $tags = Tag::all(); // Carrega todas as tags
+        $tags = Tag::all();
         return view('topics.createTopic', ['categories' => $categories, 'tags' => $tags]);
     }
 
-    // Método para armazenar um novo tópico
     public function storeTopic(Request $request)
     {
         $request->validate([
@@ -33,37 +30,27 @@ class TopicController extends Controller
             'description' => 'required|string',
             'status' => 'required|boolean',
             'category_id' => 'required|exists:categories,idCategory',
-            'tags' => 'nullable|array', // Validação para tags
-            'tags.*' => 'exists:tags,id', // Valida se as tags são válidas
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ]);
 
-        $topicData = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'status' => $request->status,
-            'category_id' => $request->category_id,
-        ];
+        $topic = Topic::create($request->only(['title', 'description', 'status', 'category_id']));
 
-        $topic = Topic::create($topicData);
-
-        // Associa as tags ao tópico, se existirem
         if ($request->has('tags')) {
-            $topic->tags()->sync($request->tags); // Associa as tags selecionadas ao tópico
+            $topic->tags()->sync($request->tags);
         }
 
         return redirect()->route('topics.listAllTopics');
     }
 
-    // Método para mostrar o formulário de edição de um tópico
     public function editTopicForm($id)
     {
         $topic = Topic::findOrFail($id);
         $categories = Category::all();
-        $tags = Tag::all(); // Carrega todas as tags
-        return view('topics.editTopic', ['topic' => $topic, 'categories' => $categories, 'tags' => $tags]);
+        $tags = Tag::all();
+        return view('topics.editTopic', compact('topic', 'categories', 'tags'));
     }
 
-    // Método para atualizar um tópico
     public function updateTopic(Request $request, $id)
     {
         $request->validate([
@@ -71,75 +58,45 @@ class TopicController extends Controller
             'description' => 'required|string',
             'status' => 'required|boolean',
             'category_id' => 'required|exists:categories,idCategory',
-            'tags' => 'nullable|array', // Validação para tags
-            'tags.*' => 'exists:tags,id', // Valida se as tags são válidas
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ]);
 
         $topic = Topic::findOrFail($id);
+        $topic->update($request->only(['title', 'description', 'status', 'category_id']));
 
-        $topicData = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'status' => $request->status,
-            'category_id' => $request->category_id,
-        ];
-
-        $topic->update($topicData);
-
-        // Atualiza as tags associadas ao tópico
         if ($request->has('tags')) {
-            $topic->tags()->sync($request->tags); // Atualiza as tags
+            $topic->tags()->sync($request->tags);
         }
 
-        return redirect()->route('topics.listAllTopics');
+        return redirect()->route('topics.show', ['id' => $topic->id]);
     }
 
-    // Método para excluir um tópico
     public function deleteTopic($id)
     {
         $topic = Topic::findOrFail($id);
         $topic->delete();
-
         return redirect()->route('topics.listAllTopics');
     }
 
-    // Método para exibir um tópico específico
-    public function showTopic($id)
+    public function show($id)
     {
-        $topic = Topic::with('category', 'comments.user', 'tags')->findOrFail($id); // Carrega o tópico com categoria, comentários e tags
+        $topic = Topic::with('tags', 'category', 'posts')->findOrFail($id);
         return view('topics.showTopic', compact('topic'));
+
     }
 
-    // Método para listar os posts de um tópico
+    public function suspend($id)
+    {
+        $topic = Topic::findOrFail($id);
+        $topic->update(['status' => 0]);
+
+        return back()->with('message', 'Tópico suspenso com sucesso!');
+    }
+
     public function listPostsByTopic($id)
     {
         $topic = Topic::with('posts')->findOrFail($id);
-        return view('topics.listPostsByTopic', ['topic' => $topic]);
-    }
-
-    // Método para criar um post dentro de um tópico
-    public function createPostForm($id)
-    {
-        $topic = Topic::findOrFail($id);
-        return view('posts.createPost', ['topic' => $topic]);
-    }
-
-    // Método para armazenar um post dentro de um tópico
-    public function storePost(Request $request, $topicId)
-    {
-        $request->validate([
-            'content' => 'required|string',
-            'status' => 'required|boolean',
-        ]);
-
-        $post = new Post([
-            'content' => $request->content,
-            'status' => $request->status,
-            'topic_id' => $topicId,
-        ]);
-
-        $post->save();
-
-        return redirect()->route('topics.showTopic', ['id' => $topicId]);
+        return view('topics.listPostsByTopic', compact('topic'));
     }
 }

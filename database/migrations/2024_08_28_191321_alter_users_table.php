@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
-
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('photo')->nullable();
+            if (!Schema::hasColumn('users', 'photo')) {
+                $table->string('photo')->nullable();
+            }
             if (!Schema::hasColumn('users', 'role')) {
                 $table->enum('role', ['user', 'moderator', 'admin'])->default('user');
             }
@@ -21,8 +21,12 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
-            $table->dropColumn('photo');
+            if (Schema::hasColumn('users', 'role')) {
+                $table->dropColumn('role');
+            }
+            if (Schema::hasColumn('users', 'photo')) {
+                $table->dropColumn('photo');
+            }
         });
     }
 };

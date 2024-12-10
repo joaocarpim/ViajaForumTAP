@@ -58,9 +58,17 @@
             </div>
 
             <div class="col-md-6 right-box">
-                <form action="{{ route('register')}}" method="POST" class="login-form">
-                    <h2 class="login-title">Bem vindo! Registre- se</h2>
+            <form action="{{ route('register') }}" method="POST" class="login-form" enctype="multipart/form-data">
+
+            <h2 class="login-title">Bem vindo! Registre- se</h2>
                     @csrf
+
+                    <div class="mb-3">
+    <label for="photo" class="form-label">Foto de Perfil:</label>
+    <input type="file" id="photo" name="photo" class="form-control form-control-lg bg-light fs-6">
+    @error('photo') <span class="text-danger">{{$message}}</span> @enderror
+</div>
+
                     <div class="mb-3">
                         <label for="name" class="form-label">Name:</label>
                         <input type="name" id="name" name="name" class="form-control form-control-lg bg-light fs-6" value="{{ old('name') }}" required>

@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Models\Topic;
 use App\Models\Category;
 use App\Models\Tag;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
     public function listAllPosts()
     {
-        $posts = Post::all();
+        $posts = Post::with(['topic', 'tags', 'category'])->get();
         return view('posts.listAllPosts', ['posts' => $posts]);
     }
 
@@ -19,52 +21,47 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        return view('posts.createPost', compact('categories', 'tags'));  // Alterado para 'createPost'
+        $topics = Topic::all(); // Tópicos disponíveis para seleção
+        return view('posts.createPost', compact('categories', 'tags', 'topics'));
     }
 
     public function store(Request $request)
     {
-        // Validação dos dados recebidos
         $request->validate([
-            'title' => 'required|string|max:255', // Título obrigatório e com tamanho máximo
-            'category_id' => 'required|exists:categories,id', // Corrigido: 'category' para 'category_id'
-            'tags' => 'required|array', // As tags devem ser um array
-            'tags.*' => 'exists:tags,id', // Cada tag deve existir no banco
-            'content' => 'required|string', // Conteúdo obrigatório
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Imagem opcional, mas se fornecida, deve ser do tipo imagem
+            'title' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,idCategory',
+            'tags' => 'required|array',
+            'tags.*' => 'exists:tags,id',
+            'content' => 'required|string',
+            'topic_id' => 'nullable|exists:topics,id', // Validação do tópico selecionado
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
-        // Verifica se o usuário carregou uma imagem
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public'); // Armazena a imagem
-        } else {
-            $imagePath = null; // Caso não haja imagem, mantém o valor nulo
-        }
-    
-        // Cria o post com os dados fornecidos
+
+        $imagePath = $request->hasFile('image') ? $request->file('image')->store('images', 'public') : null;
+
         $post = Post::create([
             'title' => $request->title,
             'content' => $request->content,
-            'category_id' => $request->category_id,  // 'category' corrigido para 'category_id'
-            'user_id' => auth()->id(),  // Associa o post ao usuário autenticado
-            'image' => $imagePath, // Se houver imagem, armazena o caminho
+            'category_id' => $request->category_id,
+            'user_id' => auth()->id(),
+            'image' => $imagePath,
+            'topic_id' => $request->topic_id, // Relacionamento com o tópico
         ]);
-    
-        // Associa as tags selecionadas ao post
+
         $post->tags()->sync($request->tags);
-    
-        // Redireciona para a lista de posts com uma mensagem de sucesso
+
         return redirect()->route('listAllPosts')->with('success', 'Post criado com sucesso!');
     }
-    
 
     public function show($id)
     {
-        $post = Post::find($id);
+        $post = Post::with(['topic.comments.user', 'tags', 'category'])->find($id);
+
         if (!$post) {
             return redirect()->route('listAllPosts')->with('error', 'Post não encontrado!');
         }
-        return view('posts.showPost', ['post' => $post]);  // Alterado para 'showPost'
+
+        return view('posts.showPost', ['post' => $post]);
     }
 
     public function editPost($id)
@@ -76,8 +73,9 @@ class PostController extends Controller
 
         $categories = Category::all();
         $tags = Tag::all();
+        $topics = Topic::all(); // Tópicos disponíveis para seleção
 
-        return view('posts.editPost', compact('post', 'categories', 'tags'));  // Alterado para 'editPost'
+        return view('posts.editPost', compact('post', 'categories', 'tags', 'topics'));
     }
 
     public function updatePost(Request $request, $id)
@@ -90,11 +88,13 @@ class PostController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'topic_id' => 'nullable|exists:topics,id', // Validação do tópico
         ]);
 
         $post->update([
             'title' => $validated['title'],
             'content' => $validated['content'],
+            'topic_id' => $request->topic_id, // Atualizar o tópico relacionado
         ]);
 
         $post->tags()->sync($request->tags);
@@ -103,13 +103,19 @@ class PostController extends Controller
     }
 
     public function deletePost($id)
-    {
-        $post = Post::find($id);
-        if (!$post) {
-            return redirect()->route('listAllPosts')->with('error', 'Post não encontrado!');
-        }
-
-        $post->delete();
-        return redirect()->route('listAllPosts')->with('success', 'Post excluído com sucesso!');
+{
+    $post = Post::find($id);
+    if (!$post) {
+        return redirect()->route('listAllPosts')->with('error', 'Post não encontrado!');
     }
+
+    
+    if ($post->image && Storage::exists('public/' . $post->image)) {
+        Storage::delete('public/' . $post->image);
+    }
+
+    $post->delete();
+    return redirect()->route('listAllPosts')->with('success', 'Post excluído com sucesso!');
+}
+
 }

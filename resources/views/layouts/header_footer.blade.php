@@ -21,7 +21,7 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
 
-    <title> ViajaForum </title>
+    <title>ViajaForum</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
 
@@ -81,6 +81,14 @@
         .sidebar-content a {
             color: black; /* Links na sidebar */
         }
+
+        /* Estilo para a imagem de perfil */
+        .user-avatar {
+            width: 40px; /* Ajuste o tamanho conforme necessário */
+            height: 40px;
+            border-radius: 50%; /* Tornar a imagem circular */
+            object-fit: cover; /* Manter a proporção da imagem */
+        }
     </style>
 </head>
 
@@ -112,7 +120,11 @@
             @if (Auth::check())
             <div class="nav-icon">
                 <a href="{{ route('listUserById', [Auth::user()->id]) }}" class="nav-icon">
-                    <i class="fas fa-user-circle"></i>
+                    @if (Auth::user()->photo) <!-- Verificar se o usuário tem uma foto -->
+                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="Foto de perfil" class="user-avatar">
+                    @else
+                        <i class="fas fa-user-circle"></i> <!-- Ícone de usuário padrão -->
+                    @endif
                 </a>
             </div>
             <div class="nav-icon">
@@ -142,8 +154,8 @@
 
                 <a href="#collapseTopicos" data-bs-toggle="collapse">Topicos</a>
                 <div class="collapse" id="collapseTopicos">
-                    <a href="{{ route('topics.listAllTopics') }}">Visualizar</a>
-                    <a href="{{ route('topics.create') }}">Criar</a>
+                <a href="{{ route('topics.listAllTopics') }}">Visualizar</a>
+                <a href="{{ route('topics.create') }}">Criar</a>
                 </div>
 
                 <a href="#collapseTag" data-bs-toggle="collapse"> Tags</a>

@@ -19,6 +19,12 @@ class Comment extends Model
         'user_id', // Supondo que os comentários são feitos por usuários
     ];
 
+    // Relacionamento com o Post
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
+
     // Relacionamento com tópicos
     public function topic()
     {

@@ -34,7 +34,8 @@
                     @endforelse
                 </p>
 
-                <a href="{{ route('listTopicById', $topic->id) }}" class="btn btn-primary">Ver Tópico</a>
+                <!-- Corrigido o link para usar a rota 'topics.show' -->
+                <a href="{{ route('topics.show', $topic->id) }}" class="btn btn-primary">Ver Tópico</a>
                 <a href="{{ route('comments.index', ['topicId' => $topic->id]) }}" class="btn btn-primary mt-2">Ver Comentários</a>
             </div>
             <footer class="card-footer">

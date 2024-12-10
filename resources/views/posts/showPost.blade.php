@@ -1,29 +1,25 @@
 @extends('layouts.header_footer')
 
 @section('content')
-<header>
+<div class="post-container">
     <h1>{{ $post->title }}</h1>
-    <div class="post-info">
-        <span>Publicado por {{ $post->user->name }} em {{ $post->created_at->format('d/m/Y H:i') }}</span>
-    </div>
-    <div class="post-content">
-        <p>{{ $post->content }}</p>
-    </div>
+    <p>{{ $post->content }}</p>
 
-    <h2>Comentários</h2>
-    @foreach ($post->comments as $comment)
-        <div class="comment">
-            <strong>{{ $comment->user->name }}</strong> ({{ $comment->created_at->format('d/m/Y H:i') }}):
-            <p>{{ $comment->content }}</p>
-        </div>
-    @endforeach
+    @if ($post->image)
+    <img src="{{ asset('storage/' . $post->image) }}" alt="Imagem do post">
+@endif
 
-    <h2>Adicionar Comentário</h2>
-    <form action="{{ route('comentario.store') }}" method="POST">
-        @csrf
-        <textarea name="content" class="form-input" required></textarea>
-        <input type="hidden" name="post_id" value="{{ $post->id }}">
-        <button type="submit" class="submit-button">Adicionar Comentário</button>
-    </form>
-</header>
+
+    <h2>Comentários do Tópico Relacionado</h2>
+    @if ($post->topic && $post->topic->comments->isNotEmpty())
+        @foreach ($post->topic->comments as $comment)
+            <div class="comment">
+                <strong>{{ $comment->user->name }}</strong> ({{ $comment->created_at->format('d/m/Y H:i') }}):
+                <p>{{ $comment->content }}</p>
+            </div>
+        @endforeach
+    @else
+        <p>Este tópico ainda não tem comentários.</p>
+    @endif
+</div>
 @endsection

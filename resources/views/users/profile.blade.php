@@ -14,15 +14,28 @@
 
 <div class="container profile-container"> 
     @if ($user != null)
-        <form action="{{ route('updateUser', [$user->id]) }}" method="POST" class="profile-form">
+        <form action="{{ route('updateUser', [$user->id]) }}" method="POST" class="profile-form" enctype="multipart/form-data">
             @csrf
             @method('put')
-            <h2 class="text-center" style="color: #000; font-family: 'Poppins', sans-serif;">Perfil</h2>
+            <h2 class="text-center" style="color: #000; font-family: 'Poppins', sans-serif;">Foto de Perfil</h2>
             
+            <div class="mb-3 text-center">
+                @if ($user->photo)
+                    <img src="{{ asset('storage/' . $user->photo) }}" alt="Foto de Perfil" class="img-thumbnail" width="150">
+                @else
+                    <p>Sem foto de perfil</p>
+                @endif
+            </div>
+
+            <div class="mb-3">
+                <label for="photo" class="form-label">Atualizar Foto:</label>
+                <input type="file" id="photo" name="photo" class="form-control">
+                @error('photo') <span class="text-danger">{{$message}}</span> @enderror
+            </div>
+
             <div class="mb-3">
                 <label for="name" class="form-label" style="color: #000; font-family: 'Poppins', sans-serif;">Nome:</label>
-                <input type="text" id="name" name="name" class="form-control" value="{{ $user->name }}"
-                    placeholder="{{ $user->name }}" required>
+                <input type="text" id="name" name="name" class="form-control" value="{{ $user->name }}" placeholder="{{ $user->name }}" required>
                 @error('name')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -30,8 +43,7 @@
 
             <div class="mb-3">
                 <label for="email" class="form-label" style="color: #000; font-family: 'Poppins', sans-serif;">Email:</label>
-                <input type="email" id="email" name="email" class="form-control" value="{{ $user->email }}"
-                    placeholder="{{ $user->email }}" required>
+                <input type="email" id="email" name="email" class="form-control" value="{{ $user->email }}" placeholder="{{ $user->email }}" required>
                 @error('email')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror

@@ -9,11 +9,30 @@
                     <h1>{{ $post->title }}</h1>
                     <p class="text-muted">Publicado em {{ $post->created_at->format('d/m/Y H:i') }} por {{ $post->user->name }}</p>
 
-                    <p><strong>Categoria:</strong> <a href="#">{{ $post->category->name }}</a></p>
+                    <p><strong>Categoria:</strong>
+                        @if ($post->category)
+                            <a href="#">{{ $post->category->title }}</a>
+                        @else
+                            <span>Categoria não disponível</span>
+                        @endif
+                    </p>
+                    
+                    <p><strong>Tópico:</strong>
+                        @if ($post->topic)
+                            <a href="{{ route('topics.show', $post->topic->id) }}">{{ $post->topic->title }}</a>
+                        @else
+                            <span>Tópico não relacionado</span>
+                        @endif
+                    </p>
+
                     <p><strong>Tags:</strong> 
-                        @foreach ($post->tags as $tag)
-                            <span class="badge bg-primary">{{ $tag->name }}</span>
-                        @endforeach
+                        @if ($post->tags->isNotEmpty())
+                            @foreach ($post->tags as $tag)
+                                <span class="badge bg-primary">{{ $tag->title }}</span> <!-- Alterado de name para title -->
+                            @endforeach
+                        @else
+                            <span>Sem tags</span>
+                        @endif
                     </p>
                     
                     <p>{{ \Illuminate\Support\Str::limit($post->content, 200) }}</p>
